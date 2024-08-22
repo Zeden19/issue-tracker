@@ -1,26 +1,25 @@
-import {Badge, Button, Table} from "@radix-ui/themes";
+import { Button, Table } from "@radix-ui/themes";
 import Link from "next/link";
 import prisma from "@/prisma/prismaClient";
 import IssueStatusBadge from "@/app/components/IssueStatusBadge";
+import IssueActions from "@/app/issues/IssueActions";
 
 async function IssuesPage() {
   const issues = await prisma.issue.findMany();
   return (
     <div>
-      <div className={"mb-5"}>
-        <Button>
-          <Link href={"/issues/new"}>Create new Issue</Link>
-        </Button>
-      </div>
+      <IssueActions/>
       <Table.Root variant={"surface"}>
         <Table.Header>
-          <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell className={"hidden md:table-cell"}>
-            Status
-          </Table.ColumnHeaderCell>
-          <Table.ColumnHeaderCell className={"hidden md:table-cell"}>
-            Created
-          </Table.ColumnHeaderCell>
+          <Table.Row>
+            <Table.ColumnHeaderCell>Title</Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className={"hidden md:table-cell"}>
+              Status
+            </Table.ColumnHeaderCell>
+            <Table.ColumnHeaderCell className={"hidden md:table-cell"}>
+              Created
+            </Table.ColumnHeaderCell>
+          </Table.Row>
         </Table.Header>
 
         <Table.Body>
@@ -29,11 +28,11 @@ async function IssuesPage() {
               <Table.RowHeaderCell>
                 {issue.title}
                 <div className={"block md:hidden font-bold"}>
-                 <IssueStatusBadge status={issue.status}/>
+                  <IssueStatusBadge status={issue.status} />
                 </div>
               </Table.RowHeaderCell>
               <Table.Cell className={"hidden md:table-cell"}>
-                <IssueStatusBadge status={issue.status}/>
+                <IssueStatusBadge status={issue.status} />
               </Table.Cell>
               <Table.Cell className={"hidden md:table-cell"}>
                 {issue.createdAt.toDateString()}
