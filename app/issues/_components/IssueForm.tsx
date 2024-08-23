@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextField } from "@radix-ui/themes";
+import { Button, Callout, TextField, Select } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -10,15 +10,15 @@ import { issuesSchema } from "@/app/validationSchemas";
 import z from "zod";
 import { ErrorMessage, LoadingSpinner } from "@/app/components";
 import dynamic from "next/dynamic";
-import {Issue} from "@prisma/client";
+import { Issue } from "@prisma/client";
 
-const SimpleMDE = dynamic(() => import("react-simplemde-editor"), {
+const SimpleMdeReact = dynamic(() => import("react-simplemde-editor"), {
   ssr: false,
 });
 
 type issueFormData = z.infer<typeof issuesSchema>;
 
-function IssueForm({issue} : {issue?: Issue}) {
+function IssueForm({ issue }: { issue?: Issue }) {
   const [error, setError] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
   const router = useRouter();
@@ -31,7 +31,8 @@ function IssueForm({issue} : {issue?: Issue}) {
   const onSubmit: SubmitHandler<issueFormData> = async (data) => {
     try {
       setIsSubmitted(true);
-      await axios.post("/api/issues", data);
+      if (issue) await axios.patch("/api/issues/" + issue.id, data);
+      else await axios.post("/api/issues", data);
       router.push("/issues");
     } catch (e) {
       setIsSubmitted(false);
@@ -46,19 +47,37 @@ function IssueForm({issue} : {issue?: Issue}) {
           <Callout.Text color={"red"}>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form onSubmit={handleSubmit(onSubmit)} className={"space-y-3"}>
-        <h2>Create new Issue</h2>
-        <TextField.Root defaultValue={issue?.title} {...register("title")} placeholder={"Issue Title"} />
+      <form
+        onSubmit={handleSubmit(onSubmit)}
+        className={"space-y-3"}
+      >
+        <h2>{issue ? "Update Issue: " + issue.title : "Create new Issue"}</h2>
+        <TextField.Root
+          defaultValue={issue?.title}
+          {...register("title")}
+          placeholder={"Issue Title"}
+        />
+        <select className={"bg-black p-2 border border-gray-600"}
+          {...register("status")}
+          defaultValue={issue ? issue?.status : "NOT_STARTED"}
+        >
+          <option value={"NOT_STARTED"}>Not Started</option>
+          <option value={"IN_PROGRESS"}>In Progress</option>
+          <option value={"CLOSED"}>Closed</option>
+        </select>
+        <ErrorMessage>{errors.status?.message}</ErrorMessage>
+
         <ErrorMessage>{errors.title?.message}</ErrorMessage>
         <Controller
           control={control}
           name={"description"}
           defaultValue={issue?.description}
-          render={({ field }) => <SimpleMDE {...field} />}
+          render={({ field }) => <SimpleMdeReact {...field} />}
         />
         <ErrorMessage>{errors.description?.message}</ErrorMessage>
         <Button disabled={isSubmitted} type={"submit"}>
-          Submit New Issue {isSubmitted && <LoadingSpinner />}
+          {issue ? "Update Issue" : "Submit New Issue"}{" "}
+          {isSubmitted && <LoadingSpinner />}
         </Button>
       </form>
     </div>

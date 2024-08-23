@@ -11,7 +11,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json(validation.error.format(), { status: 400 });
 
   const newIssue = await prismaClient.issue.create({
-    data: { title: body.title, description: body.description },
+    data: { title: body.title, description: body.description, status: body.status },
   });
 
   return NextResponse.json(newIssue, { status: 201 });
