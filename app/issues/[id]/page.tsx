@@ -1,8 +1,8 @@
 import prisma from "@/prisma/prismaClient";
 import { notFound } from "next/navigation";
-import { Card, Flex, Heading, Text } from "@radix-ui/themes";
-import IssueStatusBadge from "@/app/components/IssueStatusBadge";
-import ReactMarkdown from "react-markdown";
+import { Box, Grid } from "@radix-ui/themes";
+import EditIssueButton from "@/app/issues/[id]/EditIssueButton";
+import IssueDetails from "@/app/issues/[id]/IssueDetails";
 
 interface Props {
   params: { id: string };
@@ -17,22 +17,15 @@ async function IssueDetailPage({ params }: Props) {
 
   if (!issue) notFound();
   return (
-    <div>
-      <Heading
-        as={"h1"}
-        size={"8"}
-        className={"underline underline-offset-8 pb-2"}
-      >
-        {issue.title} &nbsp; &nbsp;
-      </Heading>
-      <Flex gap={"3"} my={"2"}>
-        <IssueStatusBadge status={issue.status} />
-        <Text>{issue!.createdAt.toDateString()}</Text>
-      </Flex>
-      <Card className={"prose dark:prose-invert"} mt={"4"}>
-        <ReactMarkdown>{issue.description}</ReactMarkdown>
-      </Card>
-    </div>
+    <Grid columns={{ initial: "1", md: "2" }} gap={"5"}>
+      <Box>
+        <IssueDetails issue={issue} />
+      </Box>
+
+      <Box>
+        <EditIssueButton id={parseInt(params.id)}></EditIssueButton>
+      </Box>
+    </Grid>
   );
 }
 
