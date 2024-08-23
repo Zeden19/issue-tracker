@@ -1,13 +1,9 @@
-import { Badge, Card, Flex, Heading, Skeleton, Text } from "@radix-ui/themes";
-import IssueStatusBadge from "@/app/components/IssueStatusBadge";
-import ReactMarkdown from "react-markdown";
+import { Badge, Card, Flex, Skeleton } from "@radix-ui/themes";
 
 function LoadingIssuesDetailPage() {
   return (
     <div>
-      <Skeleton className={"pb-2"}>
-        A very big issue
-      </Skeleton>
+      <Skeleton className={"pb-2"}>A very big issue</Skeleton>
       <Flex gap={"3"} my={"2"}>
         <Skeleton>
           <Badge />
