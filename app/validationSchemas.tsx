@@ -1,6 +1,5 @@
 import z from "zod";
 import { IssueStates } from "@prisma/client";
-import IssueForm from "@/app/issues/_components/IssueForm";
 
 const IssueStateSchema = z.nativeEnum(IssueStates);
 

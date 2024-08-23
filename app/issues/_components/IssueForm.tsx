@@ -1,5 +1,5 @@
 "use client";
-import { Button, Callout, TextField, Select } from "@radix-ui/themes";
+import { Button, Callout, TextField } from "@radix-ui/themes";
 import "easymde/dist/easymde.min.css";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
@@ -34,6 +34,7 @@ function IssueForm({ issue }: { issue?: Issue }) {
       if (issue) await axios.patch("/api/issues/" + issue.id, data);
       else await axios.post("/api/issues", data);
       router.push("/issues");
+      router.refresh();
     } catch (e) {
       setIsSubmitted(false);
       setError("An unexpected error occurred.");
@@ -47,17 +48,15 @@ function IssueForm({ issue }: { issue?: Issue }) {
           <Callout.Text color={"red"}>{error}</Callout.Text>
         </Callout.Root>
       )}
-      <form
-        onSubmit={handleSubmit(onSubmit)}
-        className={"space-y-3"}
-      >
+      <form onSubmit={handleSubmit(onSubmit)} className={"space-y-3"}>
         <h2>{issue ? "Update Issue: " + issue.title : "Create new Issue"}</h2>
         <TextField.Root
           defaultValue={issue?.title}
           {...register("title")}
           placeholder={"Issue Title"}
         />
-        <select className={"bg-black p-2 border border-gray-600"}
+        <select
+          className={"bg-black p-2 border border-gray-600 rounded"}
           {...register("status")}
           defaultValue={issue ? issue?.status : "NOT_STARTED"}
         >
