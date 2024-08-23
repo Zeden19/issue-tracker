@@ -16,7 +16,7 @@ function IssueDetails({issue} : Props) {
       >
         {issue.title} &nbsp; &nbsp;
       </Heading>
-      <Flex gap={"3"} my={"2"} className={"alig"}>
+      <Flex gap={"3"} my={"2"}>
         <IssueStatusBadge status={issue.status} />
         <Text>{issue.createdAt.toDateString()}</Text>
       </Flex>
