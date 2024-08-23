@@ -3,18 +3,22 @@ import { Button, Dialog, Flex } from "@radix-ui/themes";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { LoadingSpinner } from "@/app/components";
 
 function DeleteButton({ issueId }: { issueId: number }) {
   const [error, setError] = useState(false);
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
 
   async function deleteIssue() {
     try {
+      setLoading(true);
       setError(false);
       await axios.delete(`/api/issues/` + issueId);
       router.push("/issues");
       router.refresh();
     } catch (e) {
+      setLoading(false);
       setError(true);
     }
   }
@@ -36,11 +40,9 @@ function DeleteButton({ issueId }: { issueId: number }) {
             <Dialog.Close>
               <Button color={"gray"}>Cancel</Button>
             </Dialog.Close>
-            <Dialog.Close>
-              <Button onClick={deleteIssue} color={"red"}>
-                Delete
-              </Button>
-            </Dialog.Close>
+            <Button disabled={loading} onClick={deleteIssue} color={"red"}>
+              Delete {loading && <LoadingSpinner />}
+            </Button>
           </Flex>
         </Dialog.Content>
       </Dialog.Root>
