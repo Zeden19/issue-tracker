@@ -1,7 +1,10 @@
+'use client';
 import { Button, Dialog, Flex } from "@radix-ui/themes";
-import { Form } from "@radix-ui/react-form";
+import axios from "axios";
+import {useRouter} from "next/navigation";
 
 function DeleteButton({ issueId }: { issueId: number }) {
+  const router = useRouter();
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -19,7 +22,16 @@ function DeleteButton({ issueId }: { issueId: number }) {
             <Button color={"gray"}>Cancel</Button>
           </Dialog.Close>
           <Dialog.Close>
-            <Button color={"red"}>Delete</Button>
+            <Button
+              onClick={async () => {
+                await axios.delete(`/api/issues/` + issueId);
+                router.push("/issues");
+                router.refresh();
+              }}
+              color={"red"}
+            >
+              Delete
+            </Button>
           </Dialog.Close>
         </Flex>
       </Dialog.Content>
