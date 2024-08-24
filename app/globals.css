@@ -11,6 +11,7 @@
     --default-font-family: var(--font-inter) !important;
 }
 
+
 body {
     color: rgb(var(--foreground-rgb));
 }
@@ -19,6 +20,10 @@ body {
     .text-balance {
         text-wrap: balance;
     }
+
+    .nav-link {
+        @apply text-zinc-400 hover:text-zinc-200 transition-colors
+    }
 }
 
 .EasyMDEContainer .CodeMirror {
@@ -26,6 +31,7 @@ body {
     border-color: #333;
     background-color: #000;
 }
+
 .EasyMDEContainer .cm-s-easymde .CodeMirror-cursor {
     border-color: #ccc;
 }
