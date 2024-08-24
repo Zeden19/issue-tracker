@@ -2,8 +2,8 @@
 import Link from "next/link";
 import { FaBugs } from "react-icons/fa6";
 import { Flex } from "@radix-ui/themes";
-import { NavLinks } from "@/app/.Navigation/NavLinks";
-import { AuthStatus } from "@/app/.Navigation/AuthStatus";
+import { NavLinks } from "@/app/NavLinks";
+import { AuthStatus } from "@/app/AuthStatus";
 
 function NavBar() {
   return (
