@@ -4,7 +4,7 @@ import { FaBugs } from "react-icons/fa6";
 import { usePathname } from "next/navigation";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
-import { Box, Flex } from "@radix-ui/themes";
+import { Avatar, Box, DropdownMenu, Flex, Text } from "@radix-ui/themes";
 
 function NavBar() {
   const pathname = usePathname();
@@ -37,7 +37,25 @@ function NavBar() {
         </Flex>
         <Box>
           {status === "authenticated" ? (
-            <Link href={"/api/auth/signout"}>Log out</Link>
+            <DropdownMenu.Root>
+              <DropdownMenu.Trigger>
+                <Avatar
+                  className={"cursor-pointer"}
+                  size={"3"}
+                  radius={"full"}
+                  fallback={"?"}
+                  src={session.user!.image!}
+                />
+              </DropdownMenu.Trigger>
+              <DropdownMenu.Content>
+                <Text size={"4"}>
+                  <DropdownMenu.Label>{session.user!.email}</DropdownMenu.Label>
+                </Text>
+                <DropdownMenu.Item>
+                  <Link href={"/api/auth/signout"}>Log out</Link>
+                </DropdownMenu.Item>
+              </DropdownMenu.Content>
+            </DropdownMenu.Root>
           ) : (
             <Link href={"/api/auth/signin"}>Log in</Link>
           )}
