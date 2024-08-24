@@ -1,11 +1,11 @@
 import {useSession} from "next-auth/react";
 import Link from "next/link";
-import {Avatar, Box, DropdownMenu, Text} from "@radix-ui/themes";
+import {Avatar, Box, DropdownMenu, Skeleton, Text} from "@radix-ui/themes";
 
 export function AuthStatus() {
   const {status, data: session} = useSession();
   
-  if (status === "loading") return null;
+  if (status === "loading") return <Skeleton><Text>Log in</Text></Skeleton>;
   if (status === "unauthenticated")
     return (
       <Link className={"nav-link"} href={"/api/auth/signin"}>
