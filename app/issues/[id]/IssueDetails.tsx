@@ -1,12 +1,13 @@
-import {Card, Flex, Heading, Text} from "@radix-ui/themes";
+import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import IssueStatusBadge from "../../components/IssueStatusBadge";
 import ReactMarkdown from "react-markdown";
-import {Issue} from "@prisma/client";
+import { Issue } from "@prisma/client";
 
 interface Props {
-  issue: Issue
+  issue: Issue;
 }
-function IssueDetails({issue} : Props) {
+
+async function IssueDetails({ issue }: Props) {
   return (
     <>
       <Heading

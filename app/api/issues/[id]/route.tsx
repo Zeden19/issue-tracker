@@ -2,11 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { issuesSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/prismaClient";
 import prismaClient from "@/prisma/prismaClient";
+import { getServerSession } from "next-auth";
+import options from "@/app/auth/authOptions";
 
 export async function PATCH(
   req: NextRequest,
   { params: { id } }: { params: { id: string } },
 ) {
+  const session = await getServerSession(options);
+
+  if (!session)
+    NextResponse.json(
+      { error: "What are you trying to do Mr./Ms. Unauthenticated...." },
+      { status: 401 },
+    );
   const body = await req.json();
 
   const validation = issuesSchema.safeParse(body);
@@ -41,6 +50,13 @@ export async function DELETE(
   req: NextRequest,
   { params: { id } }: { params: { id: string } },
 ) {
+  const session = await getServerSession(options);
+
+  if (!session)
+    return NextResponse.json(
+      { error: "What are you trying to do Mr./Ms. Unauthenticated...." },
+      { status: 401 },
+    );
   const issue = await prismaClient.issue.findUnique({
     where: {
       id: parseInt(id),
@@ -56,9 +72,12 @@ export async function DELETE(
     },
   });
 
-  return NextResponse.json({
-    title: deletedIssue.title,
-    description: deletedIssue.description,
-    status: deletedIssue.status,
-  }, {status: 200});
+  return NextResponse.json(
+    {
+      title: deletedIssue.title,
+      description: deletedIssue.description,
+      status: deletedIssue.status,
+    },
+    { status: 200 },
+  );
 }
