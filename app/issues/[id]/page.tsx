@@ -6,6 +6,7 @@ import IssueDetails from "@/app/issues/[id]/IssueDetails";
 import DeleteButton from "@/app/issues/[id]/DeleteButton";
 import { getServerSession } from "next-auth";
 import options from "@/app/auth/authOptions";
+import AssigneeSelect from "@/app/issues/[id]/AssigneeSelect";
 
 interface Props {
   params: { id: string };
@@ -34,6 +35,7 @@ async function IssueDetailPage({ params }: Props) {
           className={"md:mr-auto"}
           direction={"column"}
         >
+          <AssigneeSelect/>
           <EditIssueButton id={parseInt(params.id)} />
           <DeleteButton issueId={parseInt(params.id)} />
         </Flex>
