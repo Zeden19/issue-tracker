@@ -35,7 +35,7 @@ async function IssueDetailPage({ params }: Props) {
           className={"md:mr-auto"}
           direction={"column"}
         >
-          <AssigneeSelect/>
+          <AssigneeSelect issue={issue}/>
           <EditIssueButton id={parseInt(params.id)} />
           <DeleteButton issueId={parseInt(params.id)} />
         </Flex>

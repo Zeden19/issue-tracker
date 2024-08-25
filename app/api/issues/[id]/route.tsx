@@ -31,7 +31,7 @@ export async function PATCH(
       },
     });
     if (!user)
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: "User not found" }, { status: 400 });
   }
 
   const issue = await prismaClient.issue.findUnique({
