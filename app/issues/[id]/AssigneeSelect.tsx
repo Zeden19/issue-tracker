@@ -3,7 +3,7 @@ import { Select, Skeleton, Text } from "@radix-ui/themes";
 import { Issue, User } from "@prisma/client";
 import axios from "axios";
 import { useQuery } from "react-query";
-import { is } from "unist-util-is";
+import toast, { Toaster } from "react-hot-toast";
 
 function AssigneeSelect({ issue }: { issue: Issue }) {
   const {
@@ -27,28 +27,34 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
     );
 
   return (
-    <Select.Root
-      onValueChange={async (userId) => {
-        const data = await axios.patch(`/api/issues/${issue.id}`, {
-          assignedToUserId: userId !== "unassign" ? userId : null,
-        });
-        console.log(data);
-      }}
-      defaultValue={issue.assignedToUserId ? issue.assignedToUserId : "unassign"}
-    >
-      <Select.Trigger placeholder={"Assign..."} />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          <Select.Item value={"unassign"}>Unassign</Select.Item>
-          {users?.map((user) => (
-            <Select.Item value={user.id} key={user.id}>
-              {user.name}
-            </Select.Item>
-          ))}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Select.Root
+        onValueChange={async (userId) => {
+          await axios.patch(`/api/issues/${issue.id}`, {
+            assignedToUserId: userId !== "unassign" ? userId : null,
+          }).catch(() => {
+            toast.error("Changes could not be saved.")
+          });
+        }}
+        defaultValue={
+          issue.assignedToUserId ? issue.assignedToUserId : "unassign"
+        }
+      >
+        <Select.Trigger placeholder={"Assign..."} />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            <Select.Item value={"unassign"}>Unassign</Select.Item>
+            {users?.map((user) => (
+              <Select.Item value={user.id} key={user.id}>
+                {user.name}
+              </Select.Item>
+            ))}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+      <Toaster/>
+    </>
   );
 }
 
