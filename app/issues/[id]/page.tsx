@@ -7,6 +7,7 @@ import DeleteButton from "@/app/issues/[id]/DeleteButton";
 import { getServerSession } from "next-auth";
 import options from "@/app/auth/authOptions";
 import AssigneeSelect from "@/app/issues/[id]/AssigneeSelect";
+import { is } from "unist-util-is";
 
 interface Props {
   params: { id: string };
@@ -35,7 +36,7 @@ async function IssueDetailPage({ params }: Props) {
           className={"md:mr-auto"}
           direction={"column"}
         >
-          <AssigneeSelect issue={issue}/>
+          <AssigneeSelect issue={issue} />
           <EditIssueButton id={parseInt(params.id)} />
           <DeleteButton issueId={parseInt(params.id)} />
         </Flex>
@@ -45,5 +46,21 @@ async function IssueDetailPage({ params }: Props) {
 }
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({ params }: Props) {
+  const issue = await prisma.issue.findUnique({
+    where: { id: parseInt(params.id) },
+  });
+
+  return {
+    title: "Issue Tracker | " + issue?.title,
+    description:
+      "Details of issue  " +
+      issue?.title +
+      ". Issue is currently " +
+      issue?.status +
+      ".",
+  };
+}
 
 export default IssueDetailPage;
