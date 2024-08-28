@@ -4,7 +4,7 @@ import IssueStatusFilter from "@/app/issues/IssueStatusFilter";
 
 function IssueActions() {
   return (
-    <Flex mb={"5"} justify={"between"}>
+    <Flex justify={"between"}>
       <IssueStatusFilter />
       <Button>
         <Link href={"/issues/new"}>Create new Issue</Link>
