@@ -1,6 +1,6 @@
 import prisma from "@/prisma/prismaClient";
-import {Avatar, Card, Flex, Heading, Table} from "@radix-ui/themes";
-import { IssueStatusBadge, Link } from "@/app/components";
+import { Avatar, Card, Flex, Heading, Table } from "@radix-ui/themes";
+import { IssueStatusBadge } from "@/app/components";
 import NextLink from "next/link";
 
 async function LatestIssues() {
@@ -11,8 +11,10 @@ async function LatestIssues() {
   });
   return (
     <Card>
-      <Heading mb={"2"} size={"6"}>Latest issues</Heading>
-      <Table.Root >
+      <Heading mb={"2"} size={"6"}>
+        Latest issues
+      </Heading>
+      <Table.Root>
         <Table.Body>
           {latestIssues.map((issue) => (
             <Table.Row key={issue.id}>
