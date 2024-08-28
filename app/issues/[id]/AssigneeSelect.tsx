@@ -33,10 +33,11 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
 
   function setIssueAssigned() {
     return async (userId: string) => {
+      console.log(userId)
       await axios
         .patch(`/api/issues/${issue.id}`, {
-          assignedToUserId: userId !== "unassign" ? userId : null,
-        })
+          assignedToUserId: userId === "unassign" ? null :  userId
+        }).then(() => toast.success("Issue successfully assigned"))
         .catch(() => {
           toast.error("Changes could not be saved.");
         });
@@ -46,7 +47,7 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
   return (
     <>
       <Select.Root
-        onValueChange={setIssueAssigned}
+        onValueChange={setIssueAssigned()}
         defaultValue={
           issue.assignedToUserId ? issue.assignedToUserId : "unassign"
         }
@@ -68,5 +69,7 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
     </>
   );
 }
+
+export const dynamic = "force-dynamic";
 
 export default AssigneeSelect;
