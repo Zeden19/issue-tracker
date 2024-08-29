@@ -33,11 +33,13 @@ function AssigneeSelect({ issue }: { issue: Issue }) {
 
   function setIssueAssigned() {
     return async (userId: string) => {
-      console.log(userId)
       await axios
         .patch(`/api/issues/${issue.id}`, {
-          assignedToUserId: userId === "unassign" ? null :  userId
-        }).then(() => toast.success("Issue successfully assigned"))
+          assignedToUserId: userId === "unassign" ? null : userId,
+        })
+        .then(() => {
+          toast.success("Issue successfully assigned");
+        })
         .catch(() => {
           toast.error("Changes could not be saved.");
         });
