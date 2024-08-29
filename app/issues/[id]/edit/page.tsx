@@ -20,6 +20,7 @@ async function EditIssuePage({ params } : Props) {
 
 export default EditIssuePage;
 
+export const dynamic = 'force-static'
 
 export const metadata: Metadata = {
   title: "Issue Tracker | Edit Issue",
