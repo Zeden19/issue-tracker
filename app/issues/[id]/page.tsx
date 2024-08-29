@@ -18,8 +18,6 @@ async function IssueDetailPage({ params }: Props) {
   });
 
   if (!issue) notFound();
-
-  console.log(issue.assignedToUserId);
   const session = await getServerSession(options);
 
   return (
